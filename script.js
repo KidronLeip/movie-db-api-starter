@@ -32,15 +32,17 @@ function getPopularMovies(){
 
             // This code can be used for the display of the other popular movies (18 of them)
             // (it is a string template)
-            `<section class="movie">
-                <img src="${"TO DO"}" alt="">
-                <div>
-                    <h3>${"TO DO"}</h3>
-                    <p>${"TO DO"}
-                        <span class="vote">Vote Average: ${"TO DO"}</span>
-                    </p>
-                </div>
-            </section>`
+            for(let i = 1; i < 19; i++) {
+                `<section class="movie">
+                    <img src="${imgUrl}${json.results[i].poster_path}" alt="">
+                    <div>
+                        <h3>${json.results[i].title}</h3>
+                        <p>${json.results[i].overview}
+                            <span class="vote">Vote Average: ${json.results[i].vote_average}</span>
+                        </p>
+                    </div>
+                </section>`;
+            }
 
             popularMovies.innerHTML = html;
         }  
@@ -62,50 +64,58 @@ function getBirthYearMovies(e){
     e.preventDefault();
 
     // Get the user's input/year value
-    // TO DO
+    let year = document.getElementById("userYear").value;
+
     // the place on the page where we'll add the movies
     let birthYearMovies = document.getElementById("birthYear");
 
-    if(year < 1940 || year > 2024 || year == ""){
+    if(year < 1940 || year > 2026 || year == ""){
         birthYearMovies.innerHTML = `<p style="color: red; background-color: white;">Please enter a year between 1940 and 2022</p>`;
     }else{
-        // TO DO - Build the endpoint we need (this one has additional parameters)
-        // TO DO
+        // Build the endpoint we need (this one has additional parameters)
+        let begUrl = "https://api.themoviedb.org/3/discover/movie?api_key=501f5b76a796fbb87924ba46d92b598f&primary_release_year=";
+        let endUrl = "";
         let imgUrl = "https://image.tmdb.org/t/p/w400";
 
         // ajax time!
         // create the object
-        // TO DO
+        let xhr = new XMLHttpRequest();
 
         // attach event handlers
-        // TO DO
+        xhr.addEventListener("readystatechange", function() {
+            if(this.readyState === this.DONE){
+                // log to console
+                console.log(this.response);
 
-        /*
-            // This code can be used for the display of the movies from the given year
-            // It skips any movies that don't include a poster
-            // currently only displays the top six movies from that year but can be adjusted
-            let counter = 0;
-            for(let i = 0; counter < 6; i++){
-                if(json.results[i].poster_path === null){
-                    continue;
-                }else{
-                    `<section class="yrMovie">
-                        <img src="${"TO DO"}" alt="">
-                        <h3>${"TO DO"}</h3>
-                    </section>`; 
-                    counter++;
+                let json = this.response;
+
+                // string to build output
+                let html = "";
+
+                for(let i = 0; i < 12; i++) {
+                    if(json.results[i].poster_path === null) {
+                        continue;
+                    } else {
+                        html += `<section class="yrMovie">
+                        <img src="${imgUrl}${json.results[i].poster_path}" alt="">
+                        <h3>${json.results[i].title}</h3>
+                        </section>`;
+                    }
                 }
+                birthYearMovies.innerHTML = html;
             }
-        */
+        });
         
         // set the response type
-        // TO DO
+        xhr.responseType = "json";
+
         // open the request
-        // TO DO
+        xhr.open("GET", `${begUrl}${year}${endUrl}`);
+
         // attach the headers (optional)
 
         // send the request
-        // TO DO
+        xhr.send();
     }
 }
 
