@@ -74,7 +74,7 @@ function getBirthYearMovies(e){
     }else{
         // Build the endpoint we need (this one has additional parameters)
         let begUrl = "https://api.themoviedb.org/3/discover/movie?api_key=501f5b76a796fbb87924ba46d92b598f&primary_release_year=";
-        let endUrl = "";
+        let endUrl = "&sort_by=revenue.desc&language=en-US&include_adult=false";
         let imgUrl = "https://image.tmdb.org/t/p/w400";
 
         // ajax time!
